@@ -2,10 +2,21 @@
 <html>
   <head>
     <title>The Password Game</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <input type="text" id="password" placeholder="Enter password" />
-    <button onclick="checkPassword()">Submit</button>
+    <h1 id="title">The Password Game</h1>
+    <div>
+      <div>
+        <input
+          type="text"
+          id="password"
+          placeholder="Enter password"
+          oninput="checkPassword()"
+        />
+      </div>
+      <div id="rulebox"></div>
+    </div>
   </body>
   <script src="main.js"></script>
 </html>

@@ -1,4 +1,5 @@
 password_input = document.getElementById("password");
+rule_box = document.getElementById("rulebox");
 // can be randomized
 const digit_count = 3;
 const special_char_count = 1;
@@ -8,23 +9,102 @@ const star_x = 3;
 const have_genz_lang = true;
 const vowel_x = "a";
 
+
+requirements = {
+    "charLen8":{
+        "description":"Password must be at least 8 characters long",
+        "function":charLen8
+    },
+    "hasSpecialChar":{
+        "description":"Password must contain at least one special character",
+        "function":hasSpecialChar
+    },
+    "hasnDigit":{
+        "description":"Password must contain at least 3 digits",
+        "function":hasnDigit
+    },
+    "hasUppercase":{
+        "description":"Password must contain at least one uppercase letter",
+        "function":hasUppercase
+    },
+    "hasnUniqueChar":{
+        "description":"Password must contain at least 1 unique character",
+        "function":hasnUniqueChar
+    },
+    "xMultOfY":{
+        "description":"Password must have multiples of 2 of b",
+        "function":xMultOfY
+    },
+    "ContainMonth":{
+        "description":"Password must contain abbreviated months",
+        "function":ContainMonth
+    },
+    "containFriends":{
+        "description":"Password must contain my friend's name",
+        "function":containFriends
+    },
+    "xCharBeStar":{
+        "description":"Password must have * on the 3rd character",
+        "function":xCharBeStar
+    },
+    "containRainbow":{
+        "description":"Password must contain rainbow colors",
+        "function":containRainbow
+    },
+    "containGirlFriend":{
+        "description":"Password must contain girlfriend",
+        "function":containGirlFriend
+    },
+    "genZlang":{
+        "description":"Password must contain gen z language",
+        "function":genZlang
+    },
+    "haveMunicipality":{
+        "description":"Password must contain municipality in cebu",
+        "function":haveMunicipality
+    },
+    "notContainXVowel":{
+        "description":"Password must not contain the vowel \"a\"",
+        "function":notContainXVowel
+    }
+}
+
+
 function checkPassword() {
     console.log("checkPassword");
     console.log(password_input.value);
-    console.log("charLen8: " + charLen8(password_input.value));
-    console.log("hasSpecialChar: " + hasSpecialChar(password_input.value));
-    console.log("hasnDigit: " + hasnDigit(password_input.value));
-    console.log("hasUppercase: " + hasUppercase(password_input.value));
-    console.log("hasnUniqueChar: " + hasnUniqueChar(password_input.value));
-    console.log("xMultOfY: " + xMultOfY(password_input.value));
-    console.log("ContainMonth: " + ContainMonth(password_input.value));
-    console.log("containFriends: " + containFriends(password_input.value));
-    console.log("xCharBeStar: " + xCharBeStar(password_input.value));
-    console.log("containRainbow: " + containRainbow(password_input.value));
-    console.log("containGirlFriend: " + containGirlFriend(password_input.value));
-    console.log("genZlang: " + genZlang(password_input.value));
-    console.log("haveMunicipality: " + haveMunicipality(password_input.value));
-    console.log("notContainXVowel: " + notContainXVowel(password_input.value));
+    rule_box.innerHTML = "";
+    for(rule in requirements){
+        console.log(rule);
+        //load description
+        const elem = document.createElement("p");
+        const description = document.createTextNode(requirements[rule]["description"]);
+        elem.appendChild(description);
+        rule_box.appendChild(elem);
+        //check if valid
+        if(requirements[rule]["function"](password_input.value)){
+            elem.style.color = "green";
+        }else{
+            elem.style.color = "red";
+            break;
+        }
+
+        //rename id
+    }
+    // console.log("charLen8: " + charLen8(password_input.value));
+    // console.log("hasSpecialChar: " + hasSpecialChar(password_input.value));
+    // console.log("hasnDigit: " + hasnDigit(password_input.value));
+    // console.log("hasUppercase: " + hasUppercase(password_input.value));
+    // console.log("hasnUniqueChar: " + hasnUniqueChar(password_input.value));
+    // console.log("xMultOfY: " + xMultOfY(password_input.value));
+    // console.log("ContainMonth: " + ContainMonth(password_input.value));
+    // console.log("containFriends: " + containFriends(password_input.value));
+    // console.log("xCharBeStar: " + xCharBeStar(password_input.value));
+    // console.log("containRainbow: " + containRainbow(password_input.value));
+    // console.log("containGirlFriend: " + containGirlFriend(password_input.value));
+    // console.log("genZlang: " + genZlang(password_input.value));
+    // console.log("haveMunicipality: " + haveMunicipality(password_input.value));
+    // console.log("notContainXVowel: " + notContainXVowel(password_input.value));
 }
 
 function charLen8(string) {
