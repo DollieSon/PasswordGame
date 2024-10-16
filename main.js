@@ -2,10 +2,11 @@ password_input = document.getElementById("password");
 // can be randomized
 const digit_count = 3;
 const special_char_count = 1;
-const mult_x = "a";
-const mult_y = 4;
-const star_x = 10;
+const mult_x = "b";
+const mult_y = 2;
+const star_x = 3;
 const have_genz_lang = true;
+const vowel_x = "a";
 
 function checkPassword() {
     console.log("checkPassword");
@@ -16,13 +17,14 @@ function checkPassword() {
     console.log("hasUppercase: " + hasUppercase(password_input.value));
     console.log("hasnUniqueChar: " + hasnUniqueChar(password_input.value));
     console.log("xMultOfY: " + xMultOfY(password_input.value));
-    console.log("notContainMonth: " + notContainMonth(password_input.value));
+    console.log("ContainMonth: " + ContainMonth(password_input.value));
     console.log("containFriends: " + containFriends(password_input.value));
     console.log("xCharBeStar: " + xCharBeStar(password_input.value));
     console.log("containRainbow: " + containRainbow(password_input.value));
     console.log("containGirlFriend: " + containGirlFriend(password_input.value));
     console.log("genZlang: " + genZlang(password_input.value));
     console.log("haveMunicipality: " + haveMunicipality(password_input.value));
+    console.log("notContainXVowel: " + notContainXVowel(password_input.value));
 }
 
 function charLen8(string) {
@@ -47,12 +49,12 @@ function hasnUniqueChar(string) {
 }
 
 function xMultOfY(string){
-    re = new RegExp(mult_x + "{" + mult_y + "}","g");
+    re = new RegExp("^(([^"+mult_x+"]*"+mult_x+"[^"+mult_x+"]*){"+mult_y+"})*$","gi");
     return re.test(string);
 }
 
-function notContainMonth(string){
-    return !/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/gi.test(string);
+function ContainMonth(string){
+    return /Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/gi.test(string);
 }
 
 function containFriends(string){
@@ -60,7 +62,8 @@ function containFriends(string){
 }
 
 function xCharBeStar(string){
-    re = new RegExp("\\*{" + star_x + "}","g");
+    re = new RegExp("^(.){"+(star_x-1)+"}\\*","g");
+    console.log(re)
     return re.test(string);
 }
 
@@ -83,4 +86,9 @@ function genZlang(string){
 
 function haveMunicipality(string){
     return /Alcantara|Alcoy|Alegria|Aloguinsan|Argao|Asturias|Badian|Balamban|Bantayan Island|Barili|Bogo|Boljoon|Borbon|Carcar|Carmen|Catmon|Compostela|Consolacion|Cordova|Daan Bantayan|Dalaguete|Danao|Dumanjug|Ginatilan|Liloan|Madridejos|Malabuyoc|Medellin|Minglanilla|Moalboal|Naga|Oslob|Pilar|Pinamungajan|Poro|Ronda|Samboan|San Fernando|San Francisco|San Remigio|Santa Fe|Santander|Sibonga|Sogod|Tabogon|Tabuelan|Talisay|Toledo|Tuburan|Tudela/gi.test(string);
+}
+
+function notContainXVowel(string){
+    re = new RegExp(""+vowel_x+"","gi")
+    return !re.test(string)
 }
