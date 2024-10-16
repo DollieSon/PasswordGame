@@ -4,3 +4,9 @@ body{
     flex-direction: column;
     align-items: center;
 }
+
+#gamebox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

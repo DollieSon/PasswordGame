@@ -1,5 +1,8 @@
 password_input = document.getElementById("password");
 rule_box = document.getElementById("rulebox");
+score_box = document.getElementById("scorebox");
+min_word = ""
+
 // can be randomized
 const digit_count = 3;
 const special_char_count = 1;
@@ -71,26 +74,48 @@ requirements = {
 
 
 function checkPassword() {
-    console.log("checkPassword");
-    console.log(password_input.value);
-    rule_box.innerHTML = "";
+    console.log(password_input.value)
+    rule_box.innerHTML = ""
+    is_winner = true
     for(rule in requirements){
-        console.log(rule);
+        // console.log(rule);
         //load description
-        const elem = document.createElement("p");
-        const description = document.createTextNode(requirements[rule]["description"]);
-        elem.appendChild(description);
-        rule_box.appendChild(elem);
+        const elem = document.createElement("p")
+        const description = document.createTextNode(requirements[rule]["description"])
+        elem.appendChild(description)
+        rule_box.appendChild(elem)
         //check if valid
         if(requirements[rule]["function"](password_input.value)){
-            elem.style.color = "green";
+            elem.style.color = "green"
         }else{
-            elem.style.color = "red";
+            elem.style.color = "red"
+            is_winner = false
             break;
         }
-
         //rename id
     }
+    if(is_winner && min_word.length == 0){
+        min_word = password_input.value
+        console.log(min_word)
+    }
+    console.log(is_winner)
+    if(is_winner){
+        if(min_word.length == 0){
+            min_word = password_input.value
+        }else if(min_word.length > password_input.value.length){
+            min_word = password_input.value
+        }
+        const word = document.createElement("p")
+        const word_text = document.createTextNode("Minimum word created: " + min_word)
+        const len = document.createElement("p")
+        const len_text = document.createTextNode("Legnth: " + min_word.length)
+        word.appendChild(word_text)
+        len.appendChild(len_text)
+        score_box.innerHTML = ""
+        score_box.appendChild(word)
+        score_box.appendChild(len)
+    }
+
     // console.log("charLen8: " + charLen8(password_input.value));
     // console.log("hasSpecialChar: " + hasSpecialChar(password_input.value));
     // console.log("hasnDigit: " + hasnDigit(password_input.value));
@@ -116,7 +141,7 @@ function hasSpecialChar(string) {
 }
 
 function hasnDigit(string) {
-    re = new RegExp("\\d{" + digit_count + "}", "g");
+    re = new RegExp("([^\\d]?\\d[^\\d]?){"+digit_count+"}", "g");
     return re.test(string);
 }
 
@@ -143,7 +168,7 @@ function containFriends(string){
 
 function xCharBeStar(string){
     re = new RegExp("^(.){"+(star_x-1)+"}\\*","g");
-    console.log(re)
+    // console.log(re)
     return re.test(string);
 }
 
@@ -157,10 +182,11 @@ function containGirlFriend(string){
 }
 
 function genZlang(string){
+    res = /rizz|gyatt|skibidi|sigma|fanum tax|aura|ohio|brain( )?rot|sus|fr|no( )?cap|mog|grindset|mew|bussin(g)?|goon|imposter|pog|looks( )?maxxing|glizzy/gi.test(string);
     if (have_genz_lang){
-        return /rizz|gyatt|skibidi|sigma|fanum tax|aura|ohio|brain( )?rot|sus|fr|no( )?cap|mog|grindset|mew|bussin(g)?|goon|imposter|pog|looks( )?maxxing|glizzy/gi.test(string);
+        return res;
     }else{
-        return !/(rizz|gyatt|skibidi|sigma|fanum tax|aura|ohio|brain( )?rot|sus|fr|no( )?cap|mog|grindset|mew|bussin(g)?|goon|imposter|pog|looks( )?maxxing|glizzy)/gi.test(string);
+        return !res;
     }
 }
 
