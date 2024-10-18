@@ -3,39 +3,64 @@ rule_box = document.getElementById("rulebox");
 score_box = document.getElementById("scorebox");
 min_word = ""
 
+function getrandomnum(min, max) { // from min to max(inclusive)
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 // can be randomized
-const digit_count = 3;
-const special_char_count = 1;
-const mult_x = "b";
-const mult_y = 2;
-const star_x = 3;
-const have_genz_lang = true;
-const vowel_x = "a";
+const min_char_len = getrandomnum(8,17);
+const digit_count = getrandomnum(1,8);
+const special_char_count = getrandomnum(1,5);
+const uppercase_count = getrandomnum(1,5);
+const unique_char_count = getrandomnum(1,30);
+// should be a consonant
+const consonats = "bcdfghjklmnpqrstvwxyz";
+const mult_x = consonats[getrandomnum(0,consonats.length-1)];
+const mult_y = getrandomnum(1,5);
+const friends = ["ana","ray","guads","nicole","jeremy","james","paul","chavez","nina","toni","marie","theresse","guada","chavz","kenneth"];
+const star_x = getrandomnum(1,digit_count + 2);
+const have_genz_lang = getrandomnum(0,1);
+// sohuld be a vowel
+const vowels = "aeiou";
+const vowel_x = vowels[getrandomnum(0,vowels.length-1)];
+
+//print all constants
+console.log("min_char_len: " + min_char_len);
+console.log("digit_count: " + digit_count);
+console.log("special_char_count: " + special_char_count);
+console.log("uppercase_count: " + uppercase_count);
+console.log("unique_char_count: " + unique_char_count);
+console.log("mult_x: " + mult_x);
+console.log("mult_y: " + mult_y);
+console.log("friends: " + friends);
+console.log("star_x: " + star_x);
+console.log("have_genz_lang: " + have_genz_lang);
+console.log("vowel_x: " + vowel_x);
+
 
 
 requirements = {
     "charLen8":{
-        "description":"Password must be at least 8 characters long",
+        "description":`Password must be at least ${min_char_len} characters long`,
         "function":charLen8
     },
     "hasSpecialChar":{
-        "description":"Password must contain at least one special character",
+        "description":`Password must contain at least ${special_char_count} special character`,
         "function":hasSpecialChar
     },
     "hasnDigit":{
-        "description":"Password must contain at least 3 digits",
+        "description":`Password must contain at least ${digit_count} digits`,
         "function":hasnDigit
     },
     "hasUppercase":{
-        "description":"Password must contain at least one uppercase letter",
+        "description":`Password must contain at least ${uppercase_count} uppercase letter`,
         "function":hasUppercase
     },
     "hasnUniqueChar":{
-        "description":"Password must contain at least 1 unique character",
+        "description":`Password must contain at least ${unique_char_count} unique character`,
         "function":hasnUniqueChar
     },
     "xMultOfY":{
-        "description":"Password must have multiples of 2 of b",
+        "description":`Password must have multiples of ${mult_y} of ${mult_x}`,
         "function":xMultOfY
     },
     "ContainMonth":{
@@ -43,11 +68,11 @@ requirements = {
         "function":ContainMonth
     },
     "containFriends":{
-        "description":"Password must contain my friend's name",
+        "description":`Password must contain my friend's name\n ${friends.join(", ")}`,
         "function":containFriends
     },
     "xCharBeStar":{
-        "description":"Password must have * on the 3rd character",
+        "description":`Password must have * on the character ${star_x}`,
         "function":xCharBeStar
     },
     "containRainbow":{
@@ -59,7 +84,7 @@ requirements = {
         "function":containGirlFriend
     },
     "genZlang":{
-        "description":"Password must contain gen z language",
+        "description":`Password must${have_genz_lang? "":" not"} contain gen z language`,
         "function":genZlang
     },
     "haveMunicipality":{
@@ -67,7 +92,7 @@ requirements = {
         "function":haveMunicipality
     },
     "notContainXVowel":{
-        "description":"Password must not contain the vowel \"a\"",
+        "description":`Password must not contain the vowel \`${vowel_x}\``,
         "function":notContainXVowel
     }
 }
@@ -133,20 +158,23 @@ function checkPassword() {
 }
 
 function charLen8(string) {
-    return string.length >= 8;
+    return string.length >= min_char_len;
 }
 
 function hasSpecialChar(string) {
-    return /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/g.test(string);
+    re = /!|@|#|\$|%|\^|\&|\*|\(|\)|-|_|=|\+|\{|\}\[|\]|\||\\|:|;|\"|'|<|>|,|\.|\?|\/|~|`/g
+    // console.log(string.match(re))
+    return string.match(re).length >= special_char_count;
 }
 
 function hasnDigit(string) {
-    re = new RegExp("([^\\d]?\\d[^\\d]?){"+digit_count+"}", "g");
+    re = new RegExp("([^\\d]*\\d[^\\d]*){"+digit_count+"}", "g");
     return re.test(string);
 }
 
 function hasUppercase(string) {
-    return /[A-Z]/g.test(string);
+    re = new RegExp(`([^A-Z]*[A-Z][^A-Z]*){${uppercase_count}}`,"g");
+    return re.test(string);
 }
 
 function hasnUniqueChar(string) {
@@ -163,7 +191,8 @@ function ContainMonth(string){
 }
 
 function containFriends(string){
-    return /ray|ana|guads|nicole|jeremy|james|paul|chavez|nina|toni|marie|theresse|guada|chavz/gi.test(string);
+    re = new RegExp(friends.join("|"),"gi");
+    return re.test(string);
 }
 
 function xCharBeStar(string){
