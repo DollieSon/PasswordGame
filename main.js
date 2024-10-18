@@ -6,6 +6,49 @@ min_word = ""
 function getrandomnum(min, max) { // from min to max(inclusive)
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
+function getAllergicPairs(exConst,exVow){
+    new_c = consonats.replace(exConst,"");
+    new_v = vowels.replace(exVow,"");
+    alergic_pairs = []
+    // 10 pairs 5 random, 5c+v
+    for (let i = 0; i < 5; i++) {
+        pair = [new_c[getrandomnum(0,new_c.length-1)] , new_v[getrandomnum(0,new_v.length-1)]]
+        if(pair in alergic_pairs || [pair[1],pair[0]] in alergic_pairs){
+            console.log("duplicate: " + pair)
+            i--
+            continue
+        }
+        alergic_pairs.push(pair)
+    }
+    char_list = new_c + new_v
+    for (let i = 0; i < 5; i++) {
+        char_1 = char_list[getrandomnum(0,char_list.length-1)]
+        char_2 = char_list[getrandomnum(0,char_list.length-1)]
+        if([char_1,char_2] in alergic_pairs || [char_2,char_1] in alergic_pairs){
+            console.log("duplicate: " + char_1 + char_2)
+            i--
+            continue
+        }
+        alergic_pairs.push([char_1,char_2])
+    }
+    return alergic_pairs
+}
+
+function banned_pairs_string(){
+    str = ""
+    for (let i = 0; i < banned_pairs.length; i++) {
+        str += `(${banned_pairs[i].join(", ")})`
+    }
+    return str
+}
+function banned_pairs_regex(){
+    str = ""
+    for(pairs of banned_pairs){
+        str += `${pairs[0]}${pairs[1]}|${pairs[1]}${pairs[0]}|`
+    }
+    return str.slice(0,-1)
+}
+
 // can be randomized
 const min_char_len = getrandomnum(8,17);
 const digit_count = getrandomnum(1,8);
@@ -21,10 +64,12 @@ const friends = ["ana","guads","ray","nicole","jeremy","james","paul","chavez","
     "keiru","ubaldo","Econar","Mars","Kevin","Atay","Nino","Jeastel","Ashley","Malt","Zyle"
 ];
 const star_x = getrandomnum(1,digit_count + 2);
-const have_genz_lang = getrandomnum(0,1);
+const have_genz_lang = 1;
 // sohuld be a vowel
 const vowels = "aeiou";
 const vowel_x = vowels[getrandomnum(0,vowels.length-1)];
+const banned_pairs = getAllergicPairs(mult_x,vowel_x)
+
 
 //print all constants
 console.log("min_char_len: " + min_char_len);
@@ -38,10 +83,11 @@ console.log("friends: " + friends);
 console.log("star_x: " + star_x);
 console.log("have_genz_lang: " + have_genz_lang);
 console.log("vowel_x: " + vowel_x);
-
-
+console.log(`banned_pairs: ${banned_pairs_string()}`);
+console.log(`banned_pairs_regex: ${banned_pairs_regex()}`);
 
 requirements = {
+    
     "charLen8":{
         "description":`Password must be at least ${min_char_len} characters long`,
         "function":charLen8
@@ -82,10 +128,6 @@ requirements = {
         "description":"Password must contain rainbow colors",
         "function":containRainbow
     },
-    "containGirlFriend":{
-        "description":"Password must contain girlfriend",
-        "function":containGirlFriend
-    },
     "genZlang":{
         "description":`Password must${have_genz_lang? "":" not"} contain gen z language`,
         "function":genZlang
@@ -97,7 +139,11 @@ requirements = {
     "notContainXVowel":{
         "description":`Password must not contain the vowel \`${vowel_x}\``,
         "function":notContainXVowel
-    }
+    },
+    "notContainBannedPairs":{
+        "description":`Password must not contain the pairs ${banned_pairs_string()}`,
+        "function":notContainBannedPairs
+    },
 }
 
 
@@ -228,5 +274,11 @@ function haveMunicipality(string){
 
 function notContainXVowel(string){
     re = new RegExp(""+vowel_x+"","gi")
+    return !re.test(string)
+}
+
+function notContainBannedPairs(string){
+    re = new RegExp(banned_pairs_regex(),"gi")
+    console.log(re)
     return !re.test(string)
 }
