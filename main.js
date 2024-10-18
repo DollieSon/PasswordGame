@@ -16,7 +16,10 @@ const unique_char_count = getrandomnum(1,30);
 const consonats = "bcdfghjklmnpqrstvwxyz";
 const mult_x = consonats[getrandomnum(0,consonats.length-1)];
 const mult_y = getrandomnum(1,5);
-const friends = ["ana","ray","guads","nicole","jeremy","james","paul","chavez","nina","toni","marie","theresse","guada","chavz","kenneth"];
+const friends = ["ana","guads","ray","nicole","jeremy","james","paul","chavez","nina","toni","marie","theresse","guada","chavz","kenneth","adrian","rei","jake","nigel","joshua","charlene"
+    ,"summer","tristan","Slamm","Ardel","karylle","Bambi","Tan( )?Loi","So","Andrei","Jorash","Angel","Alex","Russell","Alex","Zhasted","Simon","Theodore","Deo","Maurice","Yana","Zak","Felicity","Fria","Elijah",
+    "keiru","ubaldo","Econar","Mars","Kevin","Atay","Nino","Jeastel","Ashley","Malt","Zyle"
+];
 const star_x = getrandomnum(1,digit_count + 2);
 const have_genz_lang = getrandomnum(0,1);
 // sohuld be a vowel
@@ -68,7 +71,7 @@ requirements = {
         "function":ContainMonth
     },
     "containFriends":{
-        "description":`Password must contain my friend's name\n ${friends.join(", ")}`,
+        "description":`Password must contain a CS-3 Student name\n ${friends.join(", ")}`,
         "function":containFriends
     },
     "xCharBeStar":{
